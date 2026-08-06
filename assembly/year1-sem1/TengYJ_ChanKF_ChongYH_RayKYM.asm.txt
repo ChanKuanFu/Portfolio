@@ -1,0 +1,2366 @@
+.MODEL SMALL
+.STACK 100
+.DATA
+
+	NL DB 13,10,'$'
+	
+	;--------------------MENUUUUU PAGE----------------------------
+	
+	WLC DB "====     WELCOME TO YUMMIES DELIVERY!     ====$"
+	BLK1 DB "======                                  ======$"
+	BLK DB "=                                            =$"
+	OP1 DB "=                1.Sign In                   =$"
+	OP2 DB "=                2.Sign Up                   =$"
+	OP3 DB "=                3.Log Out                   =$"
+	OPC DB "==============================================$"
+	STR1 DB "PLEASE ENTER YOUR OPTION : $"
+	
+	GOSIGNIN DB "===   PLEASE SIGN-UP FIRST BEFORE LOG IN   ===$"
+	
+	OPTION123 DB ?
+
+	SIGNUP DB "====       REGISTRER   AN   ACCOUNT       ====$"
+	SIGNIN DB "====           LOG   IN   PAGE            ====$"
+	SUCCES DB "===          SIGN  UP  SUCCESSFUL!!        ===$"
+	
+	
+	;-----------------------------------------------------------
+	
+	
+	
+	;---------------------SIGN UP PAGE-----------------------------
+	OPC1 DB "==============================================$"
+	BLK2 DB "======                                  ======$"
+	NAME1 DB "=  Username :$"
+	PASSWORD DB "=  Password :$"
+	PASSWORDX2 DB "=  Comfirm Password :$"
+	NAMEX2 DB " Username :$"
+	PASSWORDX3 DB " Password :$"
+	
+	INVPASS DB "=== Password You Entered Do Not Matched!!! ===$"
+	SIGNINSUC DB "   $"
+	
+	INPUTNAME LABEL BYTE
+	MAXN1 DB 30 ;(ACTUAL STORAGE IS 28 NEED TO -2 FOR $ AND #)
+	ACTN1 DB ?
+	OUTPUTNAME DB 30 DUP("$")
+	
+	INPUTPASS LABEL BYTE
+	MAXN2 DB 30 ;(ACTUAL STORAGE IS 28 NEED TO -2 FOR $ AND #)
+	ACTN2 DB ?
+	OUTPUTPASS DB 30 DUP("$")
+	
+	INPUTPASSX2 LABEL BYTE
+	MAXN21 DB 30 ;(ACTUAL STORAGE IS 28 NEED TO -2 FOR $ AND #)
+	ACTN21 DB ?
+	OUTPUTPASSX2 DB 30 DUP("$")
+	
+	
+	;-------------------------------------------------------------
+	
+	;---------------------SIGN IN PAGE-----------------------------
+	
+	
+	EMPTYCLM DB    "                                                          $"
+	INVPASSx3 DB   "=Invalid Password, Please Re-Enter your Password Again =$"
+	INVNAMEX2  DB "=  Invalid Username  , Please Enter Again  =$"
+	
+	
+	INPUTPASSX3 LABEL BYTE
+	MAXN3 DB 30 ;(ACTUAL STORAGE IS 28 NEED TO -2 FOR $ AND #)
+	ACTN3 DB ?
+	OUTPUTPASSX3 DB 30 DUP("$")
+	
+	INPUTNAME2 LABEL BYTE
+	MAXN4 DB 30 ;(ACTUAL STORAGE IS 28 NEED TO -2 FOR $ AND #)
+	ACTN4 DB ?
+	OUTPUTNAME2 DB 30 DUP("$")
+	;-------------------------------------------------------------
+	
+	;---------------------DELIVERY MENU-----------------------------
+	MSG1 DB "===================================================================$";1
+	MSG2 DB "============           LOG - IN  SUCCESSFULL  !        ============$";2                  
+	MSG3 DB "========        W E L C O M E   T O   D E L I V E R Y      ========$";3
+	MSG4 DB "===================================================================$";4
+	MSG5 DB "== 1.FRIED RICE            | RM 8 |  6.TEH              | RM 2 | ==$";5
+	MSG6 DB "== 2.TOMYUM FRIED RICE     | RM 9 |  7.KOPI             | RM 2 | ==$";6
+	MSG7 DB "== 3.YANG ZHOU FRIED RICE  | RM 9 |  8.CHAM             | RM 3 | ==$";7
+	MSG8 DB "== 4.HOKKIEN MEE           | RM 8 |  9.100 PLUS         | RM 3 | ==$";8
+  	MSG9 DB "== 5.PAN MEE               | RM 8 |                              ==$";9
+	MSGA DB "===================================================================$";A
+	MSGB DB "=================     PRESS ZERO TO LOG OUT       =================$";B
+	OPTX DB "=           INVALID OPTION, PLEASE ENTER DIGIT(0-9)           =$"
+	
+	; 	░▄▀▄▀▀▀▀▄▀▄░░░░░░░░░
+	;   ░█░░░░░░░░▀▄░░░░░░▄░
+	;   █░░▀░░▀░░░░░▀▄▄░░█░█
+	;   █░▄░█▀░▄░░░░░░░▀▀░░█
+	;   █░░▀▀▀▀░░░░░░░░░░░░█
+	;   █░░░░░░░░░░░░░░░░░░█
+	;   █░░░░░░░░░░░░░░░░░░█
+	;   ░█░░▄▄░░▄▄▄▄░░▄▄░░█░
+	;    ░█░▄▀█░▄▀░░█░▄▀█░▄▀░
+	;    ░░▀░░░▀░░░░░▀░░░▀░░░
+	
+	MSGERROR     DB "       =================== ERROR ! PLEASE ENTER AGAIN ====================$"
+	ERRORMSGQTY  DB "       ====== PLEASE CHOOSE BETWEEN (1-5)  ======$"
+	OPTD         DB "       === PLEASE ENTER YOUR OPTION (1-9)   : $"
+	MSGYN        DB "  === DO YOU WANT TO ADD ANOTHER FOOD (Y/N) // DELETE LAST ADDED ITEM (D) == : $"
+	MSGQTY       DB "       === ENTER THE QUANTITY ( AT MOST 5 ) :$"
+	MSGTOT       DB "       === TOTAL PRICE = RM $"
+	NEWMSGTOT    DB "               === NEW TOTAL PRICE = RM $"
+	MSGPAYMENT   DB "               ===== ENTER PAYMENT = RM $"
+	MSGCHANGE    DB "               CHANGE : RM $" 
+	MSGNOTENOUGH DB "               YOUR PAYMENT IS NOT ENOUGH PLEASE ENTER AGAIN !!!   $"
+	ADDRESS      DB "               ===========  PLEASE ENTER YOUR ADDRESS  =========  $"
+	ADDRESS1      DB "               $"
+	TEN          DB 10
+	WTEN         DW 10
+	CX1          DW 0
+	TOTALDATAP   DW 0
+	
+	;--------------DELIVERY----------------------
+	
+	STR2        DB "=========    CHOOSE DELIVERY OPTIONS    =========$"
+	STR3	DB "=================================================$"
+	STRDD  		DB  "======     1. STANDARD DELIVERY RM5.00     ======$"
+	PRIOD 		DB  "======     2. PRIORITY DELIVERY RM7.00     ======$"
+	STRCHOICE 	DB  "               ==  PLEASE CHOOSE BETWEEN 1 AND 2      : $"
+	STRD1 		DB  "               =======  YOU HAVE CHOSEN STANDARD DELIVERY ======$"
+	STRD2 		DB  "               =======  YOU HAVE CHOSEN PRIORITY DELIVERY ======$"
+	MSGERROR1   DB  "               ======      ERROR ! PLEASE ENTER AGAIN     ======$"
+	ERRORMSGDELI DB "               =======    YOU CAN ONLY CHOOSE 1 OR 2!    =======$"
+	DELICHOICE   DB ?
+
+	
+	OPTINP 		 DB ?         ; input option
+	OPTQTY 	     DB ?         ; input quantity 
+	OPTYN  		 DB ?         ; input yes or no
+	TOTAL  		 DB 30 DUP(?) ; store selected prices
+	ITEMQTY 	 DB 30 DUP(?) ; store quantity 
+	QTY_IDX 	 DW 0         ; how many items in qty 
+	CART_IDX	 DW 0         ; how many items in cart
+	TOTALDATA 	 DB 0		  ; for output calc
+	TOTALPRICE 	 DW 30 DUP(?) ; store all total price
+	TOTALPAYMENT DW 0
+	PAYMENT DW 0         ; for calc payment 
+	BALANCE DW 0         ; for balance output 
+	
+	ITEM DB 20 DUP (?)
+	
+	PRICE   DB 8,9,9,8,8,2,2,3,3   ; 9 menu prices
+	
+	PAIDAMT LABEL BYTE
+	MAX DB 5
+	ACTN DB ?
+	OUTPAIDAMT DB 5 DUP("$")
+	
+	INPUTADDRESS LABEL BYTE
+	MAXN5 DB 70 ;(ACTUAL STORAGE IS 28 NEED TO -2 FOR $ AND #)
+	ACTN5 DB ?
+	OUTPUTADDRESS DB 70 DUP("$")
+	;-----------------------------------------------------------------------------------------
+	
+	;-------------------------------------receipttttt---------------------------------------------
+			
+		YMS1 DB  "===================================================================$";1
+		YMS2 DB  "==== ____ ===  ____ == ____ === _____ =====___________________ ====$";2
+		YMS3 DB  "=== \\____   //___    //____   //_____     \\_________________/ ===$";3
+		YMS4 DB  "===  \\   \ //   /   //     \ //      \    //________________/  ===$";4
+		YMS5 DB  "===   \\___\/___/   //_______\/________\  //    \____________   ===$";5
+		YMS6 DB  "===    \\______/   //____/\______/\_____\ \\_________________\  ===$";6
+		YMS7 DB  "===     \\    /   ||    / \\    / \\     | \\_________________\ ===$";7
+		YMS8 DB  "===      ||___|   ||___|   \\__/   \|____|  \\_____________/___\===$";8
+		YMS9 DB  "===      ||   |   ||   |    \_/    ||    |  _____________//    /===$";9
+		YMSA DB  "===      ||___|   ||___|           ||____| //_________________/ ===$";A
+		YMSB DB  "===      ||___|   ||___|           ||____| \\________________/  ===$";B
+		YMSC DB  "===================================================================$";C
+		YMSD DB  "=========        O R D E R       S U C C E S S F U L ! !   ========$";D 
+		YMSE DB  "===================================================================$";E
+		YMSF DB  "=== ADDRESS  : $";F
+		YMS10 DB "=== USERNAME : $";10
+		YMS11 DB "       ==========      P L E A S E    B E    P A T I E N T      ==========$";11
+		YMS12 DB "       =======   YOUR  ORDER   WILL  ARRIVE  AS  SOON  AS  POSIBLE  ======$";12
+		YMS13 DB "       =========== T H A N K Y O U   F O R   S U P P O R T   =============$";13
+		YMS14 DB "       ===================================================================$";14
+.CODE
+
+
+MAIN PROC
+    MOV AX, @DATA        
+    MOV DS, AX
+
+	LWLC:
+	;CLEAR SCREEN 
+	MOV AH,06H
+	MOV AL,00H
+	MOV BH,4Eh ;front is for background / back is the font colour
+	MOV CX,0000H ;UPPER LEFT ROW : COLOMN
+	MOV DX,184FH ;LOWER RIGHT ROW : COLOMN
+	INT 10H
+	
+	MOV AH,02h   
+	MOV BH,00    ;page
+	MOV DX,0011H ;set row 00 and coloumn 05
+	INT 10H      
+
+
+;1.  
+;---------MENU-------------------
+	;--WLC MENU--
+	
+	;-----BORDER SET TO MIDDLE----
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border1
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0111H 
+	INT 10H 
+	
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border2
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0211H 
+	INT 10H 
+
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border3
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0311H 
+	INT 10H 
+
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border4
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0411H 
+	INT 10H 
+
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border5
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0511H 
+	INT 10H 
+
+	;=========
+	MOV AH,09H
+	LEA DX,OPC
+	INT 21H
+    
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border6
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0611H 
+	INT 10H 
+
+	MOV AH,09H
+	LEA DX,BLK1
+	INT 21H
+    
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border7
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0711H 
+	INT 10H 
+	
+	MOV AH,09H
+	LEA DX,WLC
+	INT 21H
+    
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border8
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0811H 
+	INT 10H
+	
+	MOV AH,09H
+	LEA DX,BLK1
+	INT 21H
+    
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border9
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0911H 
+	INT 10H 
+	
+	MOV AH,09H
+	LEA DX,OPC
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;borderA
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0A11H 
+	INT 10H 
+	
+	;----please sign-up first before sign in-----
+	
+	
+	MOV AH,09H
+	LEA DX,GOSIGNIN
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;borderB
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0B11H 
+	INT 10H 
+	
+	MOV AH,09H
+	LEA DX,OPC
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;borderC
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0C11H 
+	INT 10H 
+	
+
+	
+	;---OP 1/2/3---
+	
+	
+	MOV AH,09H
+	LEA DX,OP1
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;borderD
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0D11H 
+	INT 10H 
+	
+	
+	MOV AH,09H
+	LEA DX,OP2
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;bordeE
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0E11H 
+	INT 10H
+	
+	MOV AH,09H
+	LEA DX,BLK
+	INT 21H
+    
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;borderF
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0F11H 
+	INT 10H
+	
+	MOV AH,09H
+	LEA DX,OP3
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border10
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,1011H 
+	INT 10H
+	
+	MOV AH,09H
+	LEA DX,OPC
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border11
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,1111H 
+	INT 10H
+	
+	;--DISPLAY OPTION--
+	MOV AH,09H
+	LEA DX,STR1
+	INT 21H
+	
+	;INPUT OPTION 1/2
+	MOV AH,01H
+	INT 21H
+	SUB AL,30H
+	MOV OPTION123,AL
+	MOV BH,OPTION123
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border12
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,1211H 
+	INT 10H
+	
+	MOV AH,09H
+	LEA DX,OPC
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border13
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,1311H 
+	INT 10H
+	
+	MOV AL,00H
+
+;------COMPARE 1/2 OTHERS INVALID------------
+		CMP OPTION123,1
+		JE CALL_SIGNIN
+		CMP OPTION123,2
+		JE CALL_SIGNUP
+		CMP OPTION123,3
+		JE CALL_LOGOUT
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		JMP LOTH
+		;GO TO OTHER
+;------------------------------------------------
+			
+			LOTH:
+			
+			JMP LWLC
+
+;---------------- CALL WRAPPERS ----------------
+
+		CALL_SIGNUP:
+			CALL SIGNUPPAGE
+			JMP FIN
+
+		CALL_SIGNIN:
+			CALL SIGNINPAGE
+			JMP FIN
+			
+		CALL_LOGOUT:
+			CALL LOGOUTPAGE
+			JMP FIN
+;------------------------------------------------
+
+	SIGNUPPAGE:
+	
+	;CLEAR SCREEN  
+	MOV AH,06H
+	MOV AL,00H
+	MOV BH,4Eh ;front is for background / back is the font colour
+	MOV CX,0000H ;UPPER LEFT ROW : COLOMN
+	MOV DX,184FH ;LOWER RIGHT ROW : COLOMN
+	INT 10H
+	
+	;-----BORDER SET TO MIDDLE----
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border1
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0111H 
+	INT 10H 
+	
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border2
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0211H 
+	INT 10H 
+
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border3
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0311H 
+	INT 10H 
+
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border4
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0411H 
+	INT 10H 
+
+    MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border5
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0511H 
+	INT 10H 
+	
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border6
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0611H 
+	INT 10H 
+	
+	;2.	
+		;----- SIGNUP-------
+		MOV AH,09H
+		LEA DX,OPC1
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;border7
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0711H 
+		INT 10H 
+		
+		MOV AH,09H
+		LEA DX,BLK2
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;border8
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0811H 
+		INT 10H 
+		
+		MOV AH,09H
+		LEA DX,SIGNUP
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;border9
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0911H 
+		INT 10H 
+		
+		MOV AH,09H
+		LEA DX,BLK2
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;borderA
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0A11H 
+		INT 10H 
+		
+		MOV AH,09H
+		LEA DX,OPC1
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;borderB
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0B11H 
+		INT 10H 
+		
+		;-------------------
+		
+	;2.1---------------------------
+		;DISPLAY ENTER USERNAME
+		MOV AH,09H
+		LEA DX,NAME1
+		INT 21H
+		
+		;2.1.1.--INPUT USERNAME--
+		MOV AH,0AH
+		LEA DX,INPUTNAME
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;borderC
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0C11H 
+		INT 10H 
+	;2.2-----------------------------
+		;2.1.2-DISPLAY ENTER PASSWORD--
+		MOV AH,09H
+		LEA DX,PASSWORD
+		INT 21H
+		
+		;--INPUT PASSWORD--
+		MOV AH,0AH
+		LEA DX,INPUTPASS
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;borderD
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0D11H 
+		INT 10H 
+	;2.3------------------------------
+		;2.1.4.---COMFIRM AGAIN------
+		COMFIRMPASS:
+		;2.1.3.-DISPLAY ENTER RE-ENTER PASSWORD--
+		MOV AH,09H
+		LEA DX,PASSWORDX2
+		INT 21H
+		
+		;--INPUT PASSWORD--
+		MOV AH,0AH
+		LEA DX,INPUTPASSX2
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;borderE
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0E11H 
+		INT 10H 
+		
+		
+	;--------------------------------
+	;      LOOPING CHECK ACTNUM
+	
+		MOV SI,0
+		MOV CH,0
+		MOV CL,ACTN2
+		
+	;--------------------------------
+		
+	;---LOOPING FOR DOUBLE CHECK PASSWORD---
+		L1:
+		
+			MOV BH,OUTPUTPASS[SI]
+			CMP OUTPUTPASSX2[SI],BH
+			JNE LINV
+			INC SI
+			
+		LOOP L1
+		;-----------------------------
+		
+		;          SUCCESS 
+		;GO TO SIGN-IN PAGE DIRECTLY
+		
+		CALL SIGNINPAGE
+		RET
+		;RETURN 
+		
+		;-----------------------------
+		;           INVALID
+		LINV:
+		
+		MOV AH,09H
+		LEA DX,OPC
+		INT 21
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21
+		
+		;borderF
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0F11H 
+		INT 10H 
+		
+		MOV AH,09H
+		LEA DX,INVPASS
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21
+		
+		;border10
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,1011H 
+		INT 10H 
+		
+		MOV AH,09H
+		LEA DX,OPC
+		INT 21
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;border11
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,1111H 
+		INT 10H 
+		
+		JMP COMFIRMPASS
+		;-----------------------------
+;------------------------------------------------
+
+;------------------------------------------------	
+        
+	;3.	;----- SIGNIN PAGE-------
+		SIGNINPAGE:
+		;3.1----CHECK USER REGISTER-----
+		
+		;---CASE 1 | HAVEN SIGN UP------------
+		CMP ACTN1, 0
+		JE NOSIGNUP
+		
+		;---CASE 2 | ALREADY SIGN IN(CONTINUE)----------
+		JMP CONTSIGNIN
+				
+		;3.1.1----USER  HAVEN  REGISTER-----
+		NOSIGNUP:
+				; jump back to main menu
+				JMP LWLC 
+	
+		
+    ;3.1.2-------- USER CONTINUE SIGN-IN ----------
+	CONTSIGNIN: 
+			
+			MOV AH,06H
+			MOV AL,00H
+			MOV BH,4Eh ;front is for background / back is the font colour
+			MOV CX,0000H ;UPPER LEFT ROW : COLOMN
+			MOV DX,184FH ;LOWER RIGHT ROW : COLOMN
+			INT 10H
+			
+			MOV AH,02h   
+			MOV BH,00    ;page
+			MOV DX,0011H ;set row and coloumn
+			INT 10H           
+			
+			;-----BORDER SET TO MIDDLE----
+			MOV AH,09H
+			LEA DX,EMPTYCLM
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;border1
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0111H 
+			INT 10H 
+			
+			MOV AH,09H
+			LEA DX,EMPTYCLM
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;border2
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0211H 
+			INT 10H 
+
+			MOV AH,09H
+			LEA DX,EMPTYCLM
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;border3
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0311H 
+			INT 10H 
+
+			MOV AH,09H
+			LEA DX,EMPTYCLM
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			
+			;border4
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0411H 
+			INT 10H 
+			
+			MOV AH,09H
+			LEA DX,OPC1
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;border5
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0511H 
+			INT 10H 
+			
+			MOV AH,09H
+			LEA DX,BLK2
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;border6
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0611H 
+			INT 10H 
+			
+			MOV AH,09H
+			LEA DX,SIGNIN
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;border7
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0711H 
+			INT 10H 
+			
+			MOV AH,09H
+			LEA DX,BLK2
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;border8
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0811H 
+			INT 10H 
+			
+			MOV AH,09H
+			LEA DX,OPC1
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;border9
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0911H 
+			INT 10H 
+			
+			MOV AH,09H
+			LEA DX,SUCCES
+			INT 21H
+
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+
+			;borderA
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0A11H 
+			INT 10H
+			
+			
+			MOV AH,09H
+			LEA DX,OPC
+			INT 21H
+
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;borderB
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0B11H 
+			INT 10H
+		
+			
+
+		
+
+	;3.2----------INPUT USERNAME-------------
+	INPNAME:
+
+		
+		MOV AH,09H
+		LEA DX,NAMEX2
+		INT 21H
+
+		; Input email
+		MOV AH,0AH
+		LEA DX,INPUTNAME2
+		INT 21H
+		
+		;CURSORC
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0C11H 
+		INT 10H
+
+		MOV AL,ACTN4
+		CMP ACTN1,AL
+		JNE LINVNAME
+
+	;3.2.1------Compare email with stored-------
+
+		MOV SI,0
+		MOV CH,0
+		MOV CL,ACTN4
+	;----------------------------------------
+	;      COMPARE EMAIL WITH SIGN UP
+	;----------------------------------------
+	
+	L2:
+	
+		MOV AL,OUTPUTNAME[SI]
+		CMP AL,OUTPUTNAME2[SI]
+		JNE LINVNAME
+		INC SI
+		
+	LOOP L2
+		JMP LINPPASS2
+	
+	; 3.2.2---- INVALID USERNAME ------
+	LINVNAME:
+
+		MOV AH,09H
+		LEA DX,INVNAMEX2
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+
+		;borderD
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0D11H 
+		INT 10H
+		
+		JMP INPNAME
+
+	;----------------------------------
+		LINPPASS2:
+		;borderE
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0E11H 
+		INT 10H
+		
+		MOV AH,09H
+		LEA DX,PASSWORDX3
+		INT 21H
+
+		; Input password
+		MOV AH,0AH
+		LEA DX,INPUTPASSX3
+		INT 21H
+		
+		
+
+
+	;3.3.1------COMPARE PASSWORD IN STORED------
+		MOV SI,0
+		MOV CH,0
+		MOV CL,ACTN21
+				
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;borderF
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,0F11H 
+		INT 10H
+
+	;----------------------------------------
+	;       COMPARE PASS WITH SIGN UP
+	;----------------------------------------
+	
+	L4:
+		
+		MOV BL,OUTPUTPASSX2[SI]
+		CMP BL,OUTPUTPASSX3[SI]
+		JNE LINVPASS
+		INC SI
+			
+		
+	LOOP L4
+	
+	JMP LOOPYN2
+	
+	;3.3.2----- INVALID PASSWORD -----
+	LINVPASS:
+		MOV AH,09H
+		LEA DX,INVPASSX3
+		INT 21H
+
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;border12
+		MOV AH,02h   
+		MOV BH,00    
+		MOV DX,1211H 
+		INT 10H
+		
+		JMP LINPPASS2
+
+		;LOOP FOR CONTINUE ADD ITEM
+LOOPYN2:
+
+		; --Clear screen--
+		MOV AH, 06H
+		MOV AL, 00H
+		MOV BH, 0Bh ; background and font color
+		MOV CX, 0000H
+		MOV DX, 184FH
+		INT 10H
+		
+	
+
+;---------------------DISPLAYY WHOLE DELIVERY MENU-----------------
+	;border0
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,0007H 
+	INT 10H 
+
+	;MSG1
+	MOV AH,09H
+	LEA DX,MSG1
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursor1
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0107H
+	INT 10H
+	
+	;MSG2
+	MOV AH,09H
+	LEA DX,MSG2
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursor2
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0207H
+	INT 10H
+	
+	;MSG3
+	MOV AH,09H
+	LEA DX,MSG3
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursor3
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0307H
+	INT 10H
+	
+	;MSG4
+	MOV AH,09H
+	LEA DX,MSG4
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursor4
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0407H
+	INT 10H
+	
+	;MSG5
+	MOV AH,09H
+	LEA DX,MSG5
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursoR5
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0507H
+	INT 10H
+	
+	;MSG6
+	MOV AH,09H
+	LEA DX,MSG6
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursor6
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0607H
+	INT 10H
+	
+	;MSG7
+	MOV AH,09H
+	LEA DX,MSG7
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursor7
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0707H
+	INT 10H
+	
+	;MSG8
+	MOV AH,09H
+	LEA DX,MSG8
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursor8
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0807H
+	INT 10H
+	
+	;MSG9
+	MOV AH,09H
+	LEA DX,MSG9
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursor9
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0907H
+	INT 10H
+	
+	;MSGA
+	MOV AH,09H
+	LEA DX,MSGA
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursorA
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0A07H
+	INT 10H
+	
+	;MSGB
+	MOV AH,09H
+	LEA DX,MSGB
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursorB
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0B07H
+	INT 10H
+	
+	;MSGA
+	MOV AH,09H
+	LEA DX,MSGA
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;cursorC
+	MOV AH,02h
+	MOV BH,00
+	MOV DX,0C07H
+	INT 10H
+	
+	;MSGCLM
+	MOV AH,09H
+	LEA DX,EMPTYCLM
+	INT 21H
+	
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;4.------------INPUT OPTION FOR DELIVERY (0-9)----------------
+	
+	 RETRYOPT:
+		;input option
+		MOV AH,09H
+		LEA DX,OPTD
+		INT 21H
+		
+
+		MOV AH,01H
+		INT 21H
+		SUB AL,30H
+		MOV OPTINP,AL
+		
+		
+				;make sure users only input 0 to 9
+		CMP OPTINP, 0
+		JE CALL_LOGOUT1
+		CMP OPTINP, 1
+		JL INVALID_INPUTOPT
+		CMP OPTINP, 9
+		JG INVALID_INPUTOPT
+		
+		;get price
+		MOV BH,0
+		MOV BL,OPTINP
+		MOV AL,PRICE[BX-1]
+
+
+		;save data into array 
+		MOV CX,CART_IDX
+		MOV SI,CX
+		MOV TOTAL[SI],AL
+		INC CART_IDX
+		
+	;-------CONTINUE ENTER QUANTITY--------------
+			JMP RETRYQTY
+			
+	;---------CALL WRAPPER-----------
+	CALL_LOGOUT1:
+			CALL LOGOUTPAGE
+			JMP FIN
+	;--------------------------------
+	
+
+	;4.1------------INVALID INPUTOPTION----------------
+		INVALID_INPUTOPT:
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+
+			;DISPLAY ERROR OPTION
+			MOV AH,09H
+			LEA DX,MSGERROR
+			INT 21H
+				
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+				
+			JMP RETRYOPT
+	
+	;5------------ENTER QUANTITY (1-5)----------------
+	RETRYQTY:
+
+		;input quantity
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		MOV AH,09H
+		LEA DX,MSGQTY
+		INT 21H
+		
+		MOV AH,01H
+		INT 21H
+		SUB AL,30H
+		MOV OPTQTY,AL
+		
+		CMP OPTQTY,1
+		JL ERRORQTY
+		CMP OPTQTY,5
+		JG ERRORQTY
+		
+		MOV BL,0
+		MOV CX,QTY_IDX
+		MOV SI,CX
+		MOV BL,OPTQTY
+		MOV ITEMQTY[SI],BL
+		INC QTY_IDX
+
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+	;-------CONTINUE ENTER YES OR NO--------------
+		JMP RETRYYN
+	;5.1------------INVALID INPUTOPTION----------------
+		ERRORQTY:
+
+				MOV AH,09H
+				LEA DX,NL
+				INT 21H
+				
+				;DISPLAY ERROR QUANTITY
+				MOV AH,09H
+				LEA DX,ERRORMSGQTY
+				INT 21H
+				
+				MOV AH,09H
+				LEA DX,NL
+				INT 21H
+		;-------ENTER AGAIN QUANTITY---------
+			JMP RETRYQTY
+		;-----------------------------------
+		
+		;6.----------ENTER YES / NO / DELETE ITEM-------------
+		RETRYYN:
+			; ask y/n
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+
+			MOV AH,09H
+			LEA DX,MSGYN
+			INT 21H
+
+			MOV AH,01H
+			INT 21H
+			MOV OPTYN,AL
+
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+		;-------------COMPARE Y / N / D --------------------
+			; cmp yes,no and delete 
+			CMP OPTYN,'D'
+			JE DELETE
+			CMP OPTYN,'d'
+			JE DELETE
+			CMP OPTYN,'Y'
+			JE LOOPYN1
+			CMP OPTYN,'y'
+			JE LOOPYN1
+			CMP OPTYN,'N'
+			JE CART
+			CMP OPTYN,'n'
+			JE CART
+			JMP INVALID_INPUTYND
+		;----------------------------------------------------
+		
+		;6.1 -----------DELETE-ITEM-------------------
+		DELETE:
+			MOV ITEMQTY[SI],0
+			JMP RETRYYN
+		;----------------------------------------------------
+		
+		;6.2-----------------INVALID INPUT OF YES/ NO -----------------
+		INVALID_INPUTYND:
+			
+				MOV AH,09H
+				LEA DX,NL
+				INT 21H
+
+				MOV AH,09H
+				LEA DX,MSGERROR
+				INT 21H
+				
+				MOV AH,09H
+				LEA DX,NL
+				INT 21H
+				
+				;JUMP RETURN  YES / NO / DELETE OPTION
+				JMP RETRYYN
+		;-------------------------------------------------------------
+			
+			;6.3------ORDER AGAIN-------------
+			LOOPYN1:
+				JMP LOOPYN2
+			;--------------------------------
+			
+			
+	;7.------------CALCULATION OF THE PRICE-------------------
+		CART:
+			MOV BL,0             
+			MOV CX,CART_IDX      
+			MOV SI,0             
+			MOV AL,0
+		SUM_LOOP:
+			MOV AL,TOTAL[SI]
+			MOV BL,ITEMQTY[SI]
+			MUL BL
+			ADD TOTALDATA,AL     
+			INC SI
+		LOOP SUM_LOOP
+	;---------------------------------------------------------
+	
+	;7.1--------- TOTAL WITHOUT CHARGING -----------
+		;print total
+		MOV AH,09H
+		LEA DX,MSGTOT
+		INT 21H
+
+			MOV AH,0
+			MOV AL,TOTALDATA
+			MOV TOTALDATAP,AX
+			
+			CMP TOTALDATAP,10
+			JB MOV1
+			CMP TOTALDATAP,1000
+			JAE MOV4
+			CMP TOTALDATAP,100
+			JAE MOV3
+			MOV CX1,2
+			JMP LOOPPUSH
+		MOV1:
+			MOV CX1,1
+			JMP LOOPPUSH
+		MOV3:
+			MOV CX1,3
+			JMP LOOPPUSH
+		MOV4:
+			MOV CX1,4
+		LOOPPUSH:
+			MOV AX,TOTALDATAP
+			MOV CX,CX1
+			LOOPPUSHTOTAL:
+				MOV DX,0
+				DIV WTEN
+				PUSH DX
+			LOOP LOOPPUSHTOTAL
+			
+		DISPLAYTOTAL:	
+			MOV CX,CX1
+			TOTALDIS:
+				POP BX
+				MOV AH,02H
+				MOV DL,BL
+				ADD DL,30H
+				INT 21H
+			LOOP TOTALDIS
+		
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+	
+	JMP DELIVERY_OPTION
+	;--------------------------------------------------
+	
+	
+	;8. ----------DELIVERY OPTION -------------------------
+	DELIVERY_OPTION:
+	
+	; --Clear screen--
+		MOV AH, 06H
+		MOV AL, 00H
+		MOV BH, 0Bh ; background and font color
+		MOV CX, 0000H
+		MOV DX, 184FH
+		INT 10H
+		
+	;-------------------------------------------------
+	;border0
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,000FH 
+	INT 10H 
+	
+	;=======
+	MOV AH,09H
+	LEA DX,STR3
+	INT 21H
+
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border1
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,010FH 
+	INT 10H 
+	
+	; ASK FOR DELIVERY OPTION
+	MOV AH,09H
+	LEA DX,STR2
+	INT 21H
+
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border2
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,020FH 
+	INT 10H 
+	
+	;=======
+	MOV AH,09H
+	LEA DX,STR3
+	INT 21H
+
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border3
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,030FH 
+	INT 10H 
+
+	MOV AH,09H
+	LEA DX,STRDD
+	INT 21H
+
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+
+	;border4
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,040FH 
+	INT 10H 
+	
+	MOV AH,09H
+	LEA DX,PRIOD
+	INT 21H
+
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;border5
+	MOV AH,02h   
+	MOV BH,00    
+	MOV DX,050FH 
+	INT 10H 
+	
+	MOV AH,09H
+	LEA DX,STR2
+	INT 21H
+
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	;8.2--------------COMPARE OPTION 1/2 ------------
+	
+	;CHECK USER ONLY ENTER 1 AND 2
+	ASKCHOICE :
+
+		MOV AH,09H
+		LEA DX,STRCHOICE
+		INT 21H
+
+		MOV AH,01H
+		INT 21H
+		SUB AL,30H
+		MOV DELICHOICE,AL
+
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+	;------- COMPARE -------------------------------------
+		CMP DELICHOICE,1
+		JE STANDARDDELI
+		CMP DELICHOICE,2
+		JE PRIORITYDELI
+		JMP ERRORDELI
+		
+	;----------------------------------------------------
+	
+	;8.2.1----------- CHOICE 1 ---------------------------
+	STANDARDDELI:
+	; --Clear screen--
+		MOV AH, 06H
+		MOV AL, 00H
+		MOV BH, 0Bh ; background and font color
+		MOV CX, 0000H
+		MOV DX, 184FH
+		INT 10H
+
+		MOV AH,09H
+		LEA DX,STRD1
+		INT 21H
+
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		ADD TOTALDATAP,5
+		
+	JMP PRINTTOTAL
+
+	;---------------------------------------------------
+	
+	;8.2.2----------- CHOICE 2 ---------------------------
+	PRIORITYDELI:
+	; --Clear screen--
+		MOV AH, 06H
+		MOV AL, 00H
+		MOV BH, 0Bh ; background and font color
+		MOV CX, 0000H
+		MOV DX, 184FH
+		INT 10H
+
+	MOV AH,09H
+	LEA DX,STRD2
+	INT 21H
+
+	MOV AH,09H
+	LEA DX,NL
+	INT 21H
+	
+	ADD TOTALDATAP,7
+	
+	;JUMP PRINT TOTAL
+	JMP PRINTTOTAL
+	;---------------------------------------------------
+	
+	;----------CHOICE INVALID ------------------------
+	ERRORDELI:
+		MOV AH,09H
+		LEA DX,ERRORMSGDELI
+		INT 21H
+
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+
+		MOV AH,09H
+		LEA DX,MSGERROR1
+		INT 21H
+
+		MOV AH,09H
+		LEA DX,NL
+		INT 21H
+		
+		;JUMP ASK AGAIN CHOICE 1/2
+		JMP ASKCHOICE
+	;---------------------------------------------------
+	
+	;9.------------------PRINT TOTAL AMOUNT----------------------
+		PRINTTOTAL:
+						
+			MOV AH,09H
+			LEA DX,NEWMSGTOT
+			INT 21H
+			
+			CMP TOTALDATAP,10
+			JB MOV11
+			CMP TOTALDATAP,1000
+			JAE MOV44
+			CMP TOTALDATAP,100
+			JAE MOV33
+			MOV CX1,2
+			JMP LOOPPUSH1
+		MOV11:
+			MOV CX1,1
+			JMP LOOPPUSH1
+		MOV33:
+			MOV CX1,3
+			JMP LOOPPUSH1
+		MOV44:
+			MOV CX1,4
+		LOOPPUSH1:
+			MOV AX,TOTALDATAP
+			MOV CX,CX1
+			LOOPPUSHTOTAL1:
+				MOV DX,0
+				DIV WTEN
+				PUSH DX
+			LOOP LOOPPUSHTOTAL1
+			
+		DISPLAYTOTAL1:	
+			MOV CX,CX1
+			TOTALDIS1:
+				POP BX
+				MOV AH,02H
+				MOV DL,BL
+				ADD DL,30H
+				INT 21H
+			LOOP TOTALDIS1
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+
+		;----------------------------------------------------------
+		PAYMENTLOOP: 
+	
+			MOV AX,0
+			MOV AX,TOTALDATAP
+			MOV TOTALPAYMENT,AX
+			
+			MOV AH,09H
+			LEA DX,MSGPAYMENT
+			INT 21H
+			
+			MOV AH,0AH
+			LEA DX,PAIDAMT
+			INT 21H
+			
+			CMP	ACTN,0
+			JE ERRORPAY 
+			CMP ACTN,4
+			JA ERRORPAY
+			
+		;------------------------------
+			MOV CX,0
+			MOV CL,ACTN
+			MOV SI,0
+		;--------COMPARE DIGIT----------
+		CMPDIGITS:
+			MOV AL,OUTPAIDAMT[SI]
+			CMP AL,"0"
+			JL ERRORPAY
+			CMP AL,"9"
+			JG ERRORPAY
+			INC DI 
+		LOOP CMPDIGITS
+		;-----------------------------
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			MOV DI,0
+			MOV CX,0
+			MOV CL,ACTN 
+		
+
+		;-------------CONVERT--------------------
+		
+		CONVERTTODIGIT:
+			MOV AX,PAYMENT
+			MUL TEN
+			MOV PAYMENT,AX 
+			
+			MOV AL,OUTPAIDAMT[DI]
+			SUB AL,30H
+			MOV AH,0
+			ADD PAYMENT,AX 
+			
+			INC DI 
+		LOOP CONVERTTODIGIT
+		
+		;-----------COMPARE FOR VALID-----------------
+			;COMPARE IF VALID OR NOT 
+			MOV AX,TOTALPAYMENT
+			CMP AX,PAYMENT
+			JLE CALCULATION
+			JMP ERRORPAY
+		
+		;---------NOT ENOUGHT-----------------
+			ERRORPAY:
+				MOV PAYMENT,0
+				MOV AH,09H
+				LEA DX,MSGNOTENOUGH
+				INT 21H
+				
+				MOV AH,09H
+				LEA DX,NL
+				INT 21H
+				
+				;JUMP BACK PAYMENT
+				JMP PAYMENTLOOP
+		;----------------------------------------
+		
+		;-----------VALID PAYMENT----------------
+		MOV SI,0
+		MOV CX,0
+		MOV CL,ACTN
+		
+		PAID:
+			MOV AX,PAYMENT
+			MUL TEN
+			MOV PAYMENT,AX
+			MOV AH,0
+			MOV AL,OUTPAIDAMT[SI]
+			ADD PAYMENT,AX
+			INC DI
+		LOOP PAID
+		
+	
+		;----------------------------------------
+		
+		;---------CALCULATE THE CHANGE--------------
+		CALCULATION:
+
+			MOV AX,PAYMENT
+			MOV CH,0
+			MOV CL,ACTN
+			
+			; Calculate change
+			MOV AX,PAYMENT
+			SUB AX,TOTALPAYMENT
+			MOV BALANCE,AX
+			
+			;DISPLAY BALANCE 
+			MOV AH,09H
+			LEA DX,MSGCHANGE
+			INT 21H
+			
+			MOV AX,BALANCE 
+			MOV CH,0
+			MOV CL,ACTN 
+			LPUSH:
+				MOV DX,0
+				DIV wTEN
+				PUSH DX
+			LOOP LPUSH
+
+			MOV CH,0
+			MOV CL,ACTN 
+			LPOP:
+				POP BX
+				MOV AH,02H
+				MOV DL,BL
+				ADD DL,30H
+				INT 21H
+			LOOP LPOP
+			
+		;------------ENTER ADDRESS-------------------
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,ADDRESS
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,ADDRESS1
+			INT 21H
+
+			; Input ADDRESS
+			MOV AH,0AH
+			LEA DX,INPUTADDRESS
+			INT 21H
+			
+		
+		;---------------------------------------------
+		
+		;-------------RECEIPT PAGE-----------------
+					; Clear screen
+				MOV AH, 06H
+				MOV AL, 00H
+				MOV BH, 0Dh ; background and font color
+				MOV CX, 0000H
+				MOV DX, 184FH
+				INT 10H
+				
+			
+
+		;---------------------DISPLAYY WHOLE DELIVERY MENU-----------------
+			;border0
+			MOV AH,02h   
+			MOV BH,00    
+			MOV DX,0007H 
+			INT 10H 
+
+			;MSG1
+			MOV AH,09H
+			LEA DX,YMS1
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursor1
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0107H
+			INT 10H
+			
+			;MSG2
+			MOV AH,09H
+			LEA DX,YMS2
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursor2
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0207H
+			INT 10H
+			
+			;MSG3
+			MOV AH,09H
+			LEA DX,YMS3
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursor3
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0307H
+			INT 10H
+			
+			;MSG4
+			MOV AH,09H
+			LEA DX,YMS4
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursor4
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0407H
+			INT 10H
+			
+			;MSG5
+			MOV AH,09H
+			LEA DX,YMS5
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursoR5
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0507H
+			INT 10H
+			
+			;MSG6
+			MOV AH,09H
+			LEA DX,YMS6
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursor6
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0607H
+			INT 10H
+			
+			;MSG7
+			MOV AH,09H
+			LEA DX,YMS7
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursor7
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0707H
+			INT 10H
+			
+			;MSG8
+			MOV AH,09H
+			LEA DX,YMS8
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursor8
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0807H
+			INT 10H
+			
+			;MSG9
+			MOV AH,09H
+			LEA DX,YMS9
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursor9
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0907H
+			INT 10H
+			
+			;MSGA
+			MOV AH,09H
+			LEA DX,YMSA
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursorA
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0A07H
+			INT 10H
+			
+			;MSGB
+			MOV AH,09H
+			LEA DX,YMSB
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursorB
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0B07H
+			INT 10H
+			
+			;MSGC
+			MOV AH,09H
+			LEA DX,YMSC
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursorC
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0C07H
+			INT 10H
+			
+			;MSGD
+			MOV AH,09H
+			LEA DX,YMSD
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+				
+			;cursorD
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0D07H
+			INT 10H
+			
+			;MSGE
+			MOV AH,09H
+			LEA DX,YMSE
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;cursorE
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0E07H
+			INT 10H
+			
+			;MSGF
+			MOV AH,09H
+			LEA DX,YMSF
+			INT 21H
+			
+			;------DISPLAY ADDRESS STRING --------
+			MOV CH,0    ;INFRONT NUM 0
+			MOV CL,ACTN5 ;THE NUM OF ACT
+			MOV SI,0
+			
+			LADDRESS:
+				MOV AH,02H
+				MOV DL,OUTPUTADDRESS[SI]
+				INT 21H  
+				INC SI
+			LOOP LADDRESS
+			;---------------------------
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+		
+			
+			;cursorF
+			MOV AH,02h
+			MOV BH,00
+			MOV DX,0F07H
+			INT 10H
+			;------DISPLAY USERNAME STRING --------
+			;MSG10
+			MOV AH,09H
+			LEA DX,YMS10
+			INT 21H
+			
+			MOV CH,0    ;INFRONT NUM 0
+			MOV CL,ACTN1 ;THE NUM OF ACT
+			MOV SI,0
+			
+			;------DISPLAY USERNAME STRING --------
+			LUSERNAME:
+				MOV AH,02H
+				MOV DL,OUTPUTNAME[SI]
+				INT 21H  
+				INC SI
+			LOOP LUSERNAME
+			;--------------------------------------
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;MSG14
+			MOV AH,09H
+			LEA DX,YMS14
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			
+			;MSG11
+			MOV AH,09H
+			LEA DX,YMS11
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;MSG12
+			MOV AH,09H
+			LEA DX,YMS12
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;MSG13
+			MOV AH,09H
+			LEA DX,YMS13
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+			;MSG14
+			MOV AH,09H
+			LEA DX,YMS14
+			INT 21H
+			
+			MOV AH,09H
+			LEA DX,NL
+			INT 21H
+			
+		
+		;-------------------------------------------------
+
+	
+	;---------------------
+
+		LOGOUTPAGE:
+		
+		JMP FIN
+	
+	FIN:
+    MOV AX, 4C00H
+    INT 21H
+
+MAIN ENDP
+END MAIN
