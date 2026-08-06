@@ -1,1 +1,2 @@
-# Year 1 Sem 2 - Python (coming soon)
+To run the script, compile main.py with thonny or your compiler of choice
+

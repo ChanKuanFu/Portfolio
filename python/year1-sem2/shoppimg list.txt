@@ -1,0 +1,13 @@
+Shopping List
+==============================
+Chicken: 80 g
+Cooking Oil: 10 g
+Egg: 50 g
+Garlic: 5 g
+Onion: 40 g
+Pepper: 1 g
+Rice: 200 g
+Salt: 2 g
+Soy Sauce: 10 g
+
+Estimated total calories: 589.2 kcal
