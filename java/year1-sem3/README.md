@@ -26,7 +26,7 @@ persisted to disk between sessions.
 ## Project Structure
 
 ```
-smartlibrarysystem/
+object-oriented_programming_techniques_project/
 ├── SmartLibrarySystem.java   # Entry point — console menus and program flow
 ├── Library.java              # Core logic: catalog, borrowing, fines, reports, persistence
 ├── User.java                 # Base user account (auth, contact info)
@@ -43,11 +43,16 @@ smartlibrarysystem/
 
 ```bash
 # Compile
-javac smartlibrarysystem/*.java -d build
+javac object-oriented_programming_techniques_project/*.java -d build
 
 # Run
 java -cp build smartlibrarysystem.SmartLibrarySystem
 ```
+
+> Note: the folder was renamed for portfolio organization, but the Java
+> `package` inside the source files is still `smartlibrarysystem` (Java
+> package names can't contain hyphens), so the run command still refers to
+> `smartlibrarysystem.SmartLibrarySystem`.
 
 On first run, the system seeds a few default accounts so you can log
 straight in and explore the menus (see the console output for their
