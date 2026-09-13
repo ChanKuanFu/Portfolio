@@ -12,13 +12,17 @@ A console-based train ticket booking system that lets customers select routes, s
 
 ## Project Structure
 
+```
 cpp/year1-sem1/
 └── train_ticket_booking_system.cpp   (Entry point — menu, booking flow, admin dashboard)
+​```
 
 ## How to Run
 
+​```
 g++ train_ticket_booking_system.cpp -o ticket_system
 ./ticket_system
+​```
 
 ## Known Limitations
 
