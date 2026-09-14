@@ -1,0 +1,44 @@
+{
+    "2025-W49": {
+        "Monday": [
+            "Friend Rice",
+            "Friend Rice",
+            "Friend Rice",
+            "Bulk Meal",
+            "Bulk Meal"
+        ],
+        "Tuesday": [
+            "Friend Rice"
+        ],
+        "Wednesday": [
+            "Friend Rice"
+        ],
+        "Thursday": [
+            "Bulk Meal"
+        ],
+        "Friday": [
+            "Friend Rice"
+        ],
+        "Saturday": [
+            "Friend Rice"
+        ],
+        "Sunday": [
+            "Friend Rice"
+        ]
+    },
+    "2025-W50": {
+        "Monday": [
+            "Simple Fried Rice",
+            "Simple Fried Rice",
+            "Fried Rice"
+        ],
+        "Tuesday": [
+            "Fried Rice"
+        ],
+        "Wednesday": [],
+        "Thursday": [],
+        "Friday": [],
+        "Saturday": [],
+        "Sunday": []
+    }
+}
