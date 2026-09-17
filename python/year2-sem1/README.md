@@ -5,10 +5,11 @@ solved using Iterative Deepening Search (IDS) — an uninformed search
 strategy that combines the space efficiency of depth-first search with
 the completeness of breadth-first search.
 
-> Note: This was part of a group assignment where different members
-> implemented different search strategies. This file contains only the
-> IDS algorithm, which I was individually responsible for designing and
-> writing.
+> Note: This was part of a group assignment where each of the four
+> members implemented a different search strategy — Breadth-First Search,
+> Iterative Deepening Search, A* Search, and Simulated Annealing. This
+> file contains only the IDS algorithm, which I was individually
+> responsible for designing and writing.
 
 ## Problem
 
@@ -57,7 +58,10 @@ another state or exit.
 
 Implementing IDS deepened my understanding of search strategies in AI —
 particularly the trade-off between memory usage and completeness compared
-to breadth-first search. Working alongside a teammate who implemented A*
-search on the same problem also gave me a clearer picture of how informed
-search (using a heuristic) can be more efficient than uninformed search
-when a good heuristic is available.
+to breadth-first search. Comparing results with teammates who implemented
+BFS, A*, and Simulated Annealing on the same problem gave me a clearer
+picture of how these strategies differ in practice — uninformed search
+(BFS/IDS) guarantees a solution but explores more nodes, A* reaches the
+goal faster using an admissible heuristic, and Simulated Annealing, a
+local search method, trades completeness for a much lower memory
+footprint and can sometimes get trapped without finding a solution.
